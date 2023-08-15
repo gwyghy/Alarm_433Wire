@@ -1,0 +1,9 @@
+.\uwb452\deca_params_init.o: ..\DW1000\decadriver\deca_params_init.c
+.\uwb452\deca_params_init.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\uwb452\deca_params_init.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\uwb452\deca_params_init.o: ..\DW1000\decadriver\deca_regs.h
+.\uwb452\deca_params_init.o: ..\DW1000\decadriver\deca_version.h
+.\uwb452\deca_params_init.o: ..\DW1000\decadriver\deca_device_api.h
+.\uwb452\deca_params_init.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\uwb452\deca_params_init.o: ..\DW1000\decadriver\deca_param_types.h
+.\uwb452\deca_params_init.o: ..\DW1000\decadriver\deca_types.h
