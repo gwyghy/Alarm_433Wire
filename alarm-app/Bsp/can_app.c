@@ -628,7 +628,7 @@ static u32 CanRcvIrMatchProc(sCanFrame *sRxCan)
 ** 					==========  =============  ========================================
 **
 ************************************************************************************************/
-static u32 CanRcvWlSendProc(sCanFrame *sRxCan, u8 To)
+u32 CanRcvWlSendProc(sCanFrame *sRxCan, u8 To)
 {
 	u32 u32RetVal = SUCCESS;
 	u8 i;

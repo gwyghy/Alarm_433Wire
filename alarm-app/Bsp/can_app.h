@@ -203,6 +203,7 @@ uint16_t GetUwbReportTime(void);
 
 
 sCAN_FRAME SendAngleData(uint32_t func, uint8_t dest, uint8_t *data, uint8_t size);
+u32 CanRcvWlSendProc(sCanFrame *sRxCan, u8 To);
 #endif /*__CAN_APP_H__*/
 
 

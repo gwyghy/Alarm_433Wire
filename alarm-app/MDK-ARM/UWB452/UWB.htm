@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\UWB452\UWB.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\UWB452\UWB.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Aug 11 13:26:10 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Wed Aug 16 14:32:50 2023
 <BR><P>
 <H3>Maximum Stack Usage =        712 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1033,6 +1033,20 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AngleSensorMNG_Task
 </UL>
 
+<P><STRONG><a name="[116]"></a>CanRcvWlSendProc</STRONG> (Thumb, 346 bytes, Stack size 112 bytes, can_app.o(i.CanRcvWlSendProc))
+<BR><BR>[Stack]<UL><LI>Max Depth = 488 + Unknown Stack Size
+<LI>Call Chain = CanRcvWlSendProc &rArr; WL_SendData &rArr; RFID_SendData &rArr; RFTxSendPacket &rArr; SetRFChipIdle &rArr; RFID_Init &rArr; RFID_HardwareInit &rArr; RfidConfig &rArr; RfidWriteReg &rArr; RfidSpiWrite &rArr; SpiMcuWrite &rArr; DelayUs &rArr; rcu_clock_freq_get
+</UL>
+<BR>[Calls]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;can_message_transmit
+<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WL_SendData
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SaveSRemoteCtrlInfo
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
+</UL>
+<BR>[Called By]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NormalCanRxProc
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitCanRxProc
+<LI><a href="#[223]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Wl_RxDataProc
+</UL>
+
 <P><STRONG><a name="[117]"></a>CanRecvProgProc</STRONG> (Thumb, 1250 bytes, Stack size 32 bytes, caniap.o(i.CanRecvProgProc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 108 + Unknown Stack Size
 <LI>Call Chain = CanRecvProgProc &rArr; IapWriteBuf &rArr; InFlashWriteBuf &rArr; fmc_word_program &rArr; fmc_bank1_ready_wait
@@ -1681,13 +1695,13 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rcu_clock_freq_get
 </UL>
 <BR>[Called By]<UL><LI><a href="#[173]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RfidStrobe
-<LI><a href="#[1fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRFChipIdle
 <LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RfidReadFifoProc
 <LI><a href="#[1fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RFTxSendPacket
 <LI><a href="#[1f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RFCtrlSetIDLE
 <LI><a href="#[209]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SpiMcuWrite
 <LI><a href="#[203]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SpiMcuRead
 <LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SpiResetChipSingle
+<LI><a href="#[1fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRFChipIdle
 </UL>
 
 <P><STRONG><a name="[15f]"></a>DeleteSecondListData</STRONG> (Thumb, 120 bytes, Stack size 24 bytes, location_data_app.o(i.DeleteSecondListData))
@@ -3108,9 +3122,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_CPU_SR_Save
 <LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_CPU_SR_Restore
 <LI><a href="#[173]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RfidStrobe
+<LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DelayUs
 <LI><a href="#[1fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRFChipIdle
 <LI><a href="#[1ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RfidWriteFifo
-<LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DelayUs
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RFID_SendData
 </UL>
@@ -3261,7 +3275,6 @@ Global Symbols
 <LI><a href="#[20a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WaitGPIOReset
 </UL>
 <BR>[Called By]<UL><LI><a href="#[223]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Wl_RxDataProc
-<LI><a href="#[1fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRFChipIdle
 <LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RfidReadFifoProc
 <LI><a href="#[183]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RfidGetTxStatus
 <LI><a href="#[1f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RfidChipReset
@@ -3269,6 +3282,7 @@ Global Symbols
 <LI><a href="#[1f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RFCtrlSetIDLE
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI3_IRQHandler
 <LI><a href="#[1f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRxMode
+<LI><a href="#[1fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRFChipIdle
 </UL>
 
 <P><STRONG><a name="[1ff]"></a>RfidWriteFifo</STRONG> (Thumb, 18 bytes, Stack size 16 bytes, rfid_cc1101.o(i.RfidWriteFifo))
@@ -3632,8 +3646,8 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> location_data_app.o(i.LocationDataAppInit)
 </UL>
 <P><STRONG><a name="[6f]"></a>WL_MNG_Task</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, wireless.o(i.WL_MNG_Task))
-<BR><BR>[Stack]<UL><LI>Max Depth = 272 + Unknown Stack Size
-<LI>Call Chain = WL_MNG_Task &rArr; Wl_RxDataProc &rArr; SetRfidSRX &rArr; SetRxMode &rArr; RfidRxRegInit &rArr; RfidWriteReg &rArr; RfidSpiWrite &rArr; SpiMcuWrite &rArr; DelayUs &rArr; rcu_clock_freq_get
+<BR><BR>[Stack]<UL><LI>Max Depth = 544 + Unknown Stack Size
+<LI>Call Chain = WL_MNG_Task &rArr; Wl_RxDataProc &rArr; CanRcvWlSendProc &rArr; WL_SendData &rArr; RFID_SendData &rArr; RFTxSendPacket &rArr; SetRFChipIdle &rArr; RFID_Init &rArr; RFID_HardwareInit &rArr; RfidConfig &rArr; RfidWriteReg &rArr; RfidSpiWrite &rArr; SpiMcuWrite &rArr; DelayUs &rArr; rcu_clock_freq_get
 </UL>
 <BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSSemCreate
 <LI><a href="#[221]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRcvedBackCallFunc
@@ -3684,11 +3698,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UwbAnchorIrqTask
 </UL>
 
-<P><STRONG><a name="[223]"></a>Wl_RxDataProc</STRONG> (Thumb, 1318 bytes, Stack size 56 bytes, wireless.o(i.Wl_RxDataProc))
-<BR><BR>[Stack]<UL><LI>Max Depth = 272 + Unknown Stack Size
-<LI>Call Chain = Wl_RxDataProc &rArr; SetRfidSRX &rArr; SetRxMode &rArr; RfidRxRegInit &rArr; RfidWriteReg &rArr; RfidSpiWrite &rArr; SpiMcuWrite &rArr; DelayUs &rArr; rcu_clock_freq_get
+<P><STRONG><a name="[223]"></a>Wl_RxDataProc</STRONG> (Thumb, 1472 bytes, Stack size 56 bytes, wireless.o(i.Wl_RxDataProc))
+<BR><BR>[Stack]<UL><LI>Max Depth = 544 + Unknown Stack Size
+<LI>Call Chain = Wl_RxDataProc &rArr; CanRcvWlSendProc &rArr; WL_SendData &rArr; RFID_SendData &rArr; RFTxSendPacket &rArr; SetRFChipIdle &rArr; RFID_Init &rArr; RFID_HardwareInit &rArr; RfidConfig &rArr; RfidWriteReg &rArr; RfidSpiWrite &rArr; SpiMcuWrite &rArr; DelayUs &rArr; rcu_clock_freq_get
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;can_message_transmit
+<LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CanRcvWlSendProc
 <LI><a href="#[224]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WL_ReceiveData
 <LI><a href="#[212]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRfidSRX
 <LI><a href="#[173]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RfidStrobe
@@ -3814,7 +3829,6 @@ Global Symbols
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 <LI><a href="#[232]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
 <LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[22e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_invalid
@@ -3823,6 +3837,7 @@ Global Symbols
 <LI><a href="#[22d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 <LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrt
 <LI><a href="#[231]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
+<LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 </UL>
 <BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_dmp_get_euler_angle
 </UL>
@@ -3834,12 +3849,12 @@ Global Symbols
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 <LI><a href="#[232]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
 <LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[22c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_infnan
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
 <LI><a href="#[231]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
+<LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 </UL>
 <BR>[Called By]<UL><LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan
 </UL>
@@ -5353,19 +5368,6 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetWlAddr
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RfidWriteReg
-</UL>
-<BR>[Called By]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NormalCanRxProc
-<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitCanRxProc
-</UL>
-
-<P><STRONG><a name="[116]"></a>CanRcvWlSendProc</STRONG> (Thumb, 346 bytes, Stack size 112 bytes, can_app.o(i.CanRcvWlSendProc))
-<BR><BR>[Stack]<UL><LI>Max Depth = 488 + Unknown Stack Size
-<LI>Call Chain = CanRcvWlSendProc &rArr; WL_SendData &rArr; RFID_SendData &rArr; RFTxSendPacket &rArr; SetRFChipIdle &rArr; RFID_Init &rArr; RFID_HardwareInit &rArr; RfidConfig &rArr; RfidWriteReg &rArr; RfidSpiWrite &rArr; SpiMcuWrite &rArr; DelayUs &rArr; rcu_clock_freq_get
-</UL>
-<BR>[Calls]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;can_message_transmit
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WL_SendData
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SaveSRemoteCtrlInfo
-<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NormalCanRxProc
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitCanRxProc

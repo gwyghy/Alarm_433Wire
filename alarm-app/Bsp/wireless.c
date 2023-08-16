@@ -201,7 +201,8 @@ u32 NewCanTxSn(void)
 **					2016-2-3	沈万江			修改帧ID = 6时，添加保存遥控器ID的函数
 ************************************************************************************************/
 can_trasnmit_message_struct TxCan;
-
+extern u8  u8RssiSignalInf;   //信号强度
+u8 LiuShuiNumb;
 void Wl_RxDataProc(void)
 {
 	u32	i,j,k,m;
@@ -491,14 +492,14 @@ void Wl_RxDataProc(void)
 				{
 					RxWlCan.u8Data[i] = WL_RxBuf[i+5];
 				}
-						TxCan.tx_efid = RxWlCan.u32ID.u32Id;
-						TxCan.tx_ff = CAN_FF_EXTENDED;
-						TxCan.tx_dlen = RxWlCan.u16DLC;
-						for(j=0;j<RxWlCan.u16DLC;j++)
-						{
-							TxCan.tx_data[j] = WL_RxBuf[j+5];
-						}
-						can_message_transmit(CAN0, &TxCan);
+				TxCan.tx_efid = RxWlCan.u32ID.u32Id;
+				TxCan.tx_ff = CAN_FF_EXTENDED;
+				TxCan.tx_dlen = RxWlCan.u16DLC;
+				for(j=0;j<RxWlCan.u16DLC;j++)
+				{
+					TxCan.tx_data[j] = WL_RxBuf[j+5];
+				}
+				can_message_transmit(CAN0, &TxCan);
 				//InsCanTrsQueue(&RxWlCan, TRUE);
 				/*判断是否是解除对码，并且与码遥控器编号一致，防止其它编号的遥控器解除对码*/
 //				if ((RxWlCan.u32ID.ID.FT == FT_WL_TO_SC_DISCONNECT) 
@@ -510,7 +511,28 @@ void Wl_RxDataProc(void)
 //				}
 			}
 		break;	
+		case  FT_SC_TO_WL_AUTO_PRESS_CLOSE_RECEPT:    //21
+			if(RxWlCan.u32ID.ID.ACK == eNOACK)
+			{
+				i = NewCanTxSn();
+				RxWlCan.u32ID.u32Id |= 0x000f0000 & (i << 16);
+				RxWlCan.u32ID.ID.RID =3;
+				RxWlCan.u32ID.ID.TID =0;
+				RxWlCan.u32ID.ID.FT  = 22;
+				RxWlCan.u32ID.ID.SUM = LiuShuiNumb;	
+				LiuShuiNumb	++;
+				LiuShuiNumb %= 0x0f;
+				RxWlCan.u16DLC = WL_RxBuf[4];
+						
+				for (i = 0; i < RxWlCan.u16DLC; i++)
+				{
+					RxWlCan.u8Data[i] = WL_RxBuf[i+5];
+				}
+				RxWlCan.u8Data[2]  = u8RssiSignalInf; 
+				CanRcvWlSendProc(&RxWlCan,RxWlCan.u8Data[0]);
+			}
 			
+		break;		
 		default:break;
 	}
 }
