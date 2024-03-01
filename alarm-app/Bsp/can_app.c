@@ -54,7 +54,9 @@ uint8_t gTtl;
 static u8 s_u8CRC_TABLE[] = {0x00,0x31,0x62,0x53,0xC4,0xF5,0xA6,0x97,0xB9,0x88,0xDB,0xEA,0x7D,0x4C,0x1F,0x2E};	 //CRC_TABLE
 
 uint16_t gWlAddr = 0;				//WLM配置地址
+uint16_t gYKQ_ID = 0;              //接收方目的地址
 
+extern WL_WORK_STATUS eCanWLReportMode;     //无线模块的工作模式
 /*******************************************************************************************
 **函数名称：CRC_8(u8 *PData, u8 Len)
 **输　入：None
@@ -611,6 +613,58 @@ static u32 CanRcvIrMatchProc(sCanFrame *sRxCan)
 	
 	//Send_InfraredData((u16)((data.u8IrInfo[1] << 8) | data.u8IrInfo[0]),data.u8IrInfo[2]);
 		
+	return u32RetVal;
+}
+/***********************************************************************************************
+** 函 数 名：	CanRcv_YKQ_ID_AckProc
+** 输　  入：	
+** 输　  出：	
+** 功能描述：	设置接收方目的地址的应答
+** 注意事项：	
+** 作　  者：	
+** 日　  期：	
+** 版    本：	
+** 更新记录：
+** 更新记录：
+** 					日    期      姓    名                    描      述
+** 					==========  =============  ========================================
+**
+************************************************************************************************/
+u32 CanRcv_YKQ_ID_AckProc(sCanFrame *sRxCan)
+{
+	u32 u32RetVal = SUCCESS;
+	u8 i;
+	sCanFrame sTxCan;
+	memset(&sTxCan,0,sizeof(sTxCan));
+    //
+    eCanWLReportMode = WL_NORMAL_STATE;         //设为正常模式
+    gYKQ_ID = sRxCan->u8Data[0];                //接收方目的地址，遥控器ID
+	//如果需要应答发送应答帧
+	if(sRxCan->u32ID.ID.ACK == eACK)
+	{
+		sTxCan.u32ID.ID.ACK = eNOACK;
+		sTxCan.u32ID.ID.FT =  sRxCan->u32ID.ID.FT;
+		sTxCan.u32ID.ID.RD =  sRxCan->u32ID.ID.RD;
+		sTxCan.u32ID.ID.RID = sRxCan->u32ID.ID.TID;
+		sTxCan.u32ID.ID.SN =  sRxCan->u32ID.ID.SN;
+		sTxCan.u32ID.ID.SUB = sRxCan->u32ID.ID.SUB;
+		sTxCan.u32ID.ID.SUM = sRxCan->u32ID.ID.SUM;
+		sTxCan.u32ID.ID.TID = sRxCan->u32ID.ID.RID;
+		
+		sTxCan.u16DLC = sRxCan->u16DLC;
+		
+		for(i = 0; i < sTxCan.u16DLC; i++)
+			sTxCan.u8Data[i] = sRxCan->u8Data[i];
+		
+		WLTxCan.tx_efid = sTxCan.u32ID.u32Id;
+		WLTxCan.tx_ff = CAN_FF_EXTENDED;
+		WLTxCan.tx_dlen = sTxCan.u16DLC;
+		for(i = 0; i < sTxCan.u16DLC; i++)
+		{
+			WLTxCan.tx_data[i] = sRxCan->u8Data[i];
+		}
+		can_message_transmit(CAN0, &WLTxCan);
+	}
 	return u32RetVal;
 }
 /***********************************************************************************************
@@ -1468,38 +1522,35 @@ void InitCanRxProc(sCAN_FRAME CanRX_Proc)
 				break;
 				
 				case FT_SC_TO_WL_RF_MATCH_RST:					//7				// SC 发给 WL 的无线对码结果，需要应答
-					CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[5]);
+					CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 				break;
-				case FT_SC_TO_WL_MATCH_SC_GROUP_INFO:			//8				// SC发送给WL，对码架发送成组信息	
-					CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[6]);
+				case FT_SC_TO_WL_MATCH_SC_GROUP_INFO:			//8				// SC 发送给 WL，对码架发送成组信息	
+					CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 				break;
-				case FT_SC_TO_WL_UC_SC_GROUP_INFO:				//9				// SC发送给WL，被控架发送成组信息
-					CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[6]);
+				case FT_SC_TO_WL_UC_SC_GROUP_INFO:				//9				// SC 发送给 WL，被控架发送成组信息
+					CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 				break;
 				case FT_SC_TO_WL_CTL_DATA_RECEPT:				//11			// SC 发送给 遥控器的控制数据是否接收，需要应答			
-					CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[6]);
+					CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 				break;
 				case FT_SC_TO_WL_DISCONNECT:					//14			// SC 发送给 WL 解除对码
-					CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[5]);
+					CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 				break;
 				case FT_SC_TO_WL_RESET_PAR:						//16			// SC 发送给 WL 重设参数
-					CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[5]);
+					CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 				break;
 				case FT_SC_TO_WL_LIFT_RECEPT:					//17			// SC 发送给 WL 按键抬起是否接受
-					CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[6]);
+					CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 				break;
-				
-				case FT_WL_TO_SC_AUTO_PRESS_CLOSE:					//20			// SC 发送给 WL 按键抬起是否接受
-					CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[0]);
+				case FT_SC_TO_WL_ADJACENT_CTL_RECEPT:			//20		    // SC 发送给 WL 邻架控制帧应答
+					CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 				break;				
-				case FT_SC_TO_WL_RESET_PAR_WL:					//22			// 设置无线红外接收模块参数
-					CanRcvSetPar(&IRCanRX_Proc);						//PT_SER_SC_NO;
+				case FT_SC_TO_WL_SET_WL_PAR:					//23			// 设置无线红外接收模块参数
+					CanRcvSetPar(&IRCanRX_Proc);						        //PT_SER_SC_NO;
 				break;
-//				case FT_SC_TO_WL_MATCH_END:						//31			// 对码直接结束
-	//				SetLedState(LED_GREEN,FALSE,0x00);
-	//				SetLedState(LED_RED,FALSE,0x00);
-//				break;
-				
+                case FT_SC_TO_WL_SET_RECEIVER_ADD:              //24            // SC 发送给 WL 设置接收方地址
+                    CanRcv_YKQ_ID_AckProc(&IRCanRX_Proc);
+                break;
 				default:
 					break;
 			}
@@ -2147,36 +2198,35 @@ void NormalCanRxProc(sCAN_FRAME CanRX_Proc)
 					break;
 					
 					case FT_SC_TO_WL_RF_MATCH_RST:					//7				// SC 发给 WL 的无线对码结果，需要应答
-						CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[5]);
+						CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 					break;
 					case FT_SC_TO_WL_MATCH_SC_GROUP_INFO:			//8				// SC发送给WL，对码架发送成组信息	
-						CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[6]);
+						CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 					break;
 					case FT_SC_TO_WL_UC_SC_GROUP_INFO:				//9				// SC发送给WL，被控架发送成组信息
-						CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[6]);
+						CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 					break;
 					case FT_SC_TO_WL_CTL_DATA_RECEPT:				//11			// SC 发送给 遥控器的控制数据是否接收，需要应答			
-						CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[6]);
+						CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 					break;
 					case FT_SC_TO_WL_DISCONNECT:					//14			// SC 发送给 WL 解除对码
-						CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[5]);
+						CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 					break;
 					case FT_SC_TO_WL_RESET_PAR:						//16			// SC 发送给 WL 重设参数
-						CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[5]);
+						CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 					break;
 					case FT_SC_TO_WL_LIFT_RECEPT:					//17			// SC 发送给 WL 按键抬起是否接受
-						CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[6]);
+						CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
 					break;
-					case FT_SC_TO_WL_RESET_PAR_WL:					//22			// 设置无线红外接收模块参数
-						CanRcvSetPar(&IRCanRX_Proc);						//PT_SER_SC_NO;
-					break;
-				    case FT_WL_TO_SC_AUTO_PRESS_CLOSE:					//20			// SC 发送给 WL 按键抬起是否接受
-						CanRcvWlSendProc(&IRCanRX_Proc, IRCanRX_Proc.u8Data[0]);
-					break;	
-//					case FT_SC_TO_WL_MATCH_END:						//31			// 对码直接结束
-//		//				SetLedState(LED_GREEN,FALSE,0x00);
-//		//				SetLedState(LED_RED,FALSE,0x00);
-//					break;
+                    case FT_SC_TO_WL_ADJACENT_CTL_RECEPT:			//20		    // SC 发送给 WL 邻架控制帧应答
+                        CanRcvWlSendProc(&IRCanRX_Proc, gYKQ_ID);
+                    break;				
+                    case FT_SC_TO_WL_SET_WL_PAR:					//23			// 设置无线红外接收模块参数
+                        CanRcvSetPar(&IRCanRX_Proc);						        //PT_SER_SC_NO;
+                    break;
+                    case FT_SC_TO_WL_SET_RECEIVER_ADD:              //24            // SC 发送给 WL 设置接收方地址
+                        CanRcv_YKQ_ID_AckProc(&IRCanRX_Proc);
+                    break;
 					
 					default:
 						break;

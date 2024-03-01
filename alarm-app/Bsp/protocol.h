@@ -93,34 +93,37 @@ typedef union{
 #define	WL_SYNC					(u16)0x0800	//字节	2			无线同步字
 #define	PT_SER_SC_NO			(u16)0x01f0		//字节	2			支架编号	本地/整体	服务		
 
-#define FT_TYPE_MAX							        22			//帧类型个数，不包含更新程序相关
+#define FT_TYPE_MAX							        22			// 帧类型个数，不包含更新程序相关
 
-#define FT_WL_TO_SC_BEAT					        0			//无线 发给 SC 的心跳数据
+#define FT_WL_TO_SC_BEAT					        0			// 无线 发给 SC 的心跳数据
 
-#define FT_WL_TO_SC_IR_REPORT				        1			//无线 发给 SC 的红外上报数据
+#define FT_WL_TO_SC_IR_REPORT				        1			// 无线 发给 SC 的红外上报数据
 #define FT_SC_TO_WL_DBUS					        2			// SC 发给无线的总线数据，需要应答
-#define FT_WL_TO_SC_DBUS					        3			//无线 发给 SC 的总线数据，需要应答
-#define FT_WL_TO_SC_IR_MATCH				        4			//无线 发给 SC 的红外对码
-#define FT_SC_TO_WL_IR_MATCH_RST			        5			//SC 发给无线的红外对码结果，需要应答
+#define FT_WL_TO_SC_DBUS					        3			// 无线 发给 SC 的总线数据，需要应答
+#define FT_WL_TO_SC_IR_MATCH				        4			// 无线 发给 SC 的红外对码
+#define FT_SC_TO_WL_IR_MATCH_RST			        5			// SC 发给无线的红外对码结果，需要应答
 
-#define FT_WL_TO_SC_RF_MATCH				        6			//无线 发给 SC 的无线对码
-#define FT_SC_TO_WL_RF_MATCH_RST			        7			//无线与红外接收器发给 SC 的无线对码结果，需要应答
+#define FT_WL_TO_SC_RF_MATCH				        6			// 无线 发给 SC 的无线对码
+#define FT_SC_TO_WL_RF_MATCH_RST			        7			// 无线与红外接收器发给 SC 的无线对码结果，需要应答
 #define FT_SC_TO_WL_MATCH_SC_GROUP_INFO		        8			// SC发送给WL，对码架发送成组信息
 #define FT_SC_TO_WL_UC_SC_GROUP_INFO		        9			// SC发送给WL，被控架发送成组信息
 #define FT_WL_TO_SC_CTL_DATA				        10			//无线 发给 SC 的控制数据
 #define FT_SC_TO_WL_CTL_DATA_RECEPT			        11			// SC 发送给 WL 控制是否接收，需要应答
-#define FT_WL_TO_SC_CTL_DATA_SQN			        12			//无线 发给 SC 的控制数据(按键连续按下)
-#define FT_WL_TO_SC_CTL_DATA_LIFT			        13			//无线 发给 SC 的控制数据(按键抬起)
+#define FT_WL_TO_SC_CTL_DATA_SQN			        12			// 无线 发给 SC 的控制数据(按键连续按下)
+#define FT_WL_TO_SC_CTL_DATA_LIFT			        13			// 无线 发给 SC 的控制数据(按键抬起)
 #define FT_SC_TO_WL_DISCONNECT				        14			// SC 发送给 WL 解除对码
-#define FT_WL_TO_SC_DISCONNECT				        15			//无线 发给 SC 解除对码
+#define FT_WL_TO_SC_DISCONNECT				        15			// 无线 发给 SC 解除对码
 #define FT_SC_TO_WL_RESET_PAR				        16			// SC 发送给 WL 重设参数
 #define FT_SC_TO_WL_LIFT_RECEPT				        17			// SC 发送给 WL 按键抬起是否接受
-#define FT_WL_TO_SC_AUTO_PRESS_OPEN                 18          // WL 发送给 SC 设置自动补压开启
-#define FT_SC_TO_WL_AUTO_PRESS_OPEN_RECEPT          19          // SC 发送给 WL 设置自动补压开启是否接收
+#define FT_WL_TO_SC_REQUEST_CFG_FILE                18          // WL 发送给 SC 请求配置文件
+#define FT_WL_TO_SC_ADJACENT_CTL                    19          // WL 发送给 SC 邻架控制帧
 
-#define FT_WL_TO_SC_AUTO_PRESS_CLOSE                20          // WL 发送给 SC 设置自动补压关闭
-#define FT_SC_TO_WL_AUTO_PRESS_CLOSE_RECEPT         21          // SC 发送给 WL 设置自动补压关闭是否接收
-#define FT_SC_TO_WL_RESET_PAR_WL			        22			// SC 发送给 WL 设置无线红外接收模块的参数
+#define FT_SC_TO_WL_ADJACENT_CTL_RECEPT             20          // SC 发送给 WL 邻架控制帧应答
+#define FT_YKQWL_TO_SGWL_WLTEST                     21          // YKQWL 发送给 SGWL 无线测试帧
+#define FT_SGWL_TO_YKQWL_WLTEST_RECEPT			    22			// SGWL 发送给 YKQWL 无线测试应答帧
+
+#define FT_SC_TO_WL_SET_WL_PAR			            23			// SC 发送给 WL 设置无线红外接收模块的参数
+#define FT_SC_TO_WL_SET_RECEIVER_ADD				24			// SC 发送给 WL 设置接收方地址和WL 发送给 SC 设置接收方地址应答
 
 //#define FT_SC_TO_WL_RESET_PAR_WL			30			// SC 发送给 WL 设置无线红外接收模块的参数
 //#define FT_SC_TO_WL_MATCH_END				31			// SC 发送给 WL 对码结束

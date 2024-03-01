@@ -481,7 +481,7 @@ void Wl_RxDataProc(void)
 		case FT_WL_TO_SC_CTL_DATA_SQN:			// 12			// //无线 发给 SC 的控制数据(按键连续按下)
 		case FT_WL_TO_SC_CTL_DATA_LIFT:			// 13			// 无线 发给 SC 的控制数据(按键抬起)
 		case FT_WL_TO_SC_DISCONNECT:			// 15			// 无线 发给 SC 解除对码
-		case FT_SC_TO_WL_AUTO_PRESS_OPEN_RECEPT:			
+		case FT_WL_TO_SC_ADJACENT_CTL:			// 19           // WL 发送给 SC 邻架控制帧
 			if(RxWlCan.u32ID.ID.ACK == eNOACK)
 			{
 				i = NewCanTxSn();
@@ -511,14 +511,14 @@ void Wl_RxDataProc(void)
 //				}
 			}
 		break;	
-		case  FT_SC_TO_WL_AUTO_PRESS_CLOSE_RECEPT:    //21
+		case  FT_YKQWL_TO_SGWL_WLTEST:    //无线测试，21
 			if(RxWlCan.u32ID.ID.ACK == eNOACK)
 			{
 				i = NewCanTxSn();
 				RxWlCan.u32ID.u32Id |= 0x000f0000 & (i << 16);
 				RxWlCan.u32ID.ID.RID =3;
 				RxWlCan.u32ID.ID.TID =0;
-				RxWlCan.u32ID.ID.FT  = 22;
+				RxWlCan.u32ID.ID.FT  = FT_SGWL_TO_YKQWL_WLTEST_RECEPT;//22
 				RxWlCan.u32ID.ID.SUM = LiuShuiNumb;	
 				LiuShuiNumb	++;
 				LiuShuiNumb %= 0x0f;

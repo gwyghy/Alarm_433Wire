@@ -482,8 +482,8 @@ void UpdateDataProcess(void)
 	                               //   beforeP = midPoint, midPoint = midPoint->next)
 	{
 		DistBufDataCount(midPoint->p);
-		if((midPoint->p->commCnt > 3) || (midPoint->p->dist[midPoint->p->commCnt - 1] > gUwbRunPara.extent))			//通讯超时或超过检测距离
-//		if((midPoint->p->commCnt > 3) || ((midPoint->p->commCnt > 0) && (midPoint->p->dist[midPoint->p->commCnt - 1] > gUwbRunPara.extent)))
+//		if((midPoint->p->commCnt > 3) || (midPoint->p->dist[midPoint->p->commCnt - 1] > gUwbRunPara.extent))
+		if((midPoint->p->commCnt > 3) || ((midPoint->p->commCnt > 0) && (midPoint->p->dist[midPoint->p->commCnt - 1] > gUwbRunPara.extent)))	//通讯次数有效或超过检测距离，并且超过检测距离的有通讯次数
 		{
 			if(WriteTagData(midPoint->p) != TAG_DEV_OK)
 			{
